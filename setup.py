@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 __version__ = "0.0.0"
 
 REPO_NAME = "MLOps-Project"
-AUTHOR_USER_NAME = "nirjharaa"
+AUTHOR_USER_NAME = "Nirjharaa"
 SRC_REPO = "cnnClassifier"
 AUTHOR_EMAIL = "nirjharaap@gmail.com"
 
