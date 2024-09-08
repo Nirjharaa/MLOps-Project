@@ -36,8 +36,6 @@
 
 
 
-
-
 import numpy as np
 import tensorflow as tf
 import os
@@ -50,21 +48,31 @@ class PredictionPipeline:
         try:
             # Load the model
             model_path = os.path.join("artifacts", "training", "model.h5")
+            if not os.path.exists(model_path):
+                return {"error": "Model file not found at the specified path"}
             model = tf.keras.models.load_model(model_path)
         except Exception as e:
             return {"error": f"Error loading the model: {str(e)}"}
 
         try:
             # Load and preprocess the image
+            if not os.path.exists(self.filename):
+                return {"error": "Image file not found"}
+
             test_image = tf.keras.preprocessing.image.load_img(self.filename, target_size=(224, 224))
             test_image = tf.keras.preprocessing.image.img_to_array(test_image)
             test_image = np.expand_dims(test_image, axis=0)
             test_image /= 255.0  # Normalize the image
 
+            # Print image shape for debugging
+            print(f"Processed image shape: {test_image.shape}")
+
             # Make prediction
             predictions = model.predict(test_image)
-            print("Predicted probabilities: ", predictions)  # Add this line for debugging
+            print(f"Predicted probabilities: {predictions}")  # Debug print
+
             result = np.argmax(predictions, axis=1)
+            print(f"Prediction result: {result}")
         except Exception as e:
             return {"error": f"Error processing the image: {str(e)}"}
 
